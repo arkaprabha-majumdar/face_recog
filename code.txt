@@ -1,0 +1,44 @@
+Face Recognition Notebook © Arkaprabha Majumdar
+!wget 'https://i.iheart.com/v3/re/new_assets/5bbd5051278be5c15f9538d7?ops=max(750,0),quality(80)'
+!wget 'https://www.topman.com/blog/wp-content/uploads/2016/05/MET-GALA-RED-CARPET-GROUP-IMAGE_1.jpg'
+
+import PIL.Image
+import PIL.ImageDraw
+!pip install face_recognition
+import face_recognition as fr
+
+
+image1 =fr.load_image_file("/content/boyband.jpg")
+image2 =fr.load_image_file("/content/MET-GALA.jpg")
+
+image1
+
+import matplotlib.pyplot as plt
+
+plt.imshow(image1)
+
+pil_image = PIL.Image.fromarray(image2)
+for face_location in face_loc:
+    top,right,bottom,left =face_location
+    draw_shape = PIL.ImageDraw.Draw(pil_image)
+    draw_shape.rectangle([left, top, right, bottom],outline="green")
+pil_image.save("output.jpg")
+
+import cv2  
+import matplotlib.pyplot as plt
+
+gray_img = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
+
+plt.imshow(gray_img, cmap='gray')
+
+!wget "http://alereimondo.no-ip.org/OpenCV/uploads/34/frontalFace10.zip"
+!unzip "frontalFace10.zip"
+
+haar_face_cascade = cv2.CascadeClassifier('/content/haarcascade_frontalface_alt.xml')
+faces = haar_face_cascade.detectMultiScale(gray_img)
+print('Faces found: ', len(faces))
+
+for (x, y, w, h) in faces:
+    cv2.rectangle(image2, (x, y), (x+w, y+h), (0, 255, 0), 2)
+    
+plt.imshow(image2)
